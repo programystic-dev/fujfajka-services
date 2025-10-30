@@ -30,7 +30,8 @@ export const addUserToFirestore = async (user: User): Promise<void> => {
  */
 export const deleteUserFromFirestore = async (uid: string): Promise<void> => {
   try {
-    await db.collection(userCollectionKey).doc(uid).delete();
+    const userRef = db.collection(userCollectionKey).doc(uid);
+    await db.recursiveDelete(userRef);
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw new Error(`Failed to delete user from Firestore: ${error.message}`);
